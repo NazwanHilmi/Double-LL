@@ -109,7 +109,11 @@ git push origin nama-function
 
 - Buka fork Anda di GitHub.
 - Akan muncul notifikasi "Compare & pull request" — klik itu.
+
+
 ![App Screenshot](https://imglink.cc/cdn/PwEfMgKM-Z.png)
+
+
 - Isi deskripsi: apa yang diubah dan kenapa.
 - Klik Create pull request.
 - Tunggu review dari pemilik repository
