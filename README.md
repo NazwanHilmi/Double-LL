@@ -83,8 +83,10 @@ git remote -v
 
 - Buat Branch
 ```bash
-git checkout -b function
+git checkout -b nama-function
 ```
+
+
 ## Buat Function
 
 - Buka file main.c di Local Disk C -> Double LL -> main.c
@@ -93,7 +95,7 @@ git checkout -b function
 - Setelah selesai coding function yang diberikan, buka Git Bash dan jalankan perintah dibawah
 
 ```bash
-cd C:\Double-LL
+cd /c/Double-LL
 ```
 
 ```bash
@@ -102,5 +104,13 @@ git commit -m "Deskripsi singkat function"
 ```
 
 ```bash
-git push origin function
+git push origin nama-function
 ```
+
+- Buka fork Anda di GitHub.
+- Akan muncul notifikasi "Compare & pull request" — klik itu.
+![App Screenshot](https://imglink.cc/cdn/PwEfMgKM-Z.png)
+- Isi deskripsi: apa yang diubah dan kenapa.
+- Klik Create pull request.
+- Tunggu review dari pemilik repository
+
