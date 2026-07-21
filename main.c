@@ -41,6 +41,30 @@ void AddFirstSong(char *title, char *artist)
     printf("Lagu \"%s\" dari Artist \"%s\" berhasil ditambahkan di awal playlist.\n", title, artist);
 }
 
+void DeleteFirstSong()
+{
+    if (head == NULL)
+    {
+        printf("Playlist kosong, tidak ada lagu yang bisa dihapus.\n");
+        return;
+    }
+
+    struct Song *temp = head;
+
+    if (head->next == NULL)
+    {
+        head = NULL;
+    }
+    else
+    {
+        head = head->next;
+        head->prev = NULL;
+    }
+
+    printf("Lagu \"%s\" dari Artist \"%s\" berhasil dihapus dari awal playlist.\n", temp->title, temp->artist);
+    free(temp);
+}
+
 main()
 {
     int choice;
@@ -89,7 +113,7 @@ main()
             // Tambah Lagu Setelah Lagu Tertentu
             break;
         case 4:
-            // Hapus Lagu Dari Playlist Awal
+            DeleteFirstSong();
             break;
         case 5:
             // Hapus Lagu Dari Playlist Akhir
