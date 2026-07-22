@@ -108,7 +108,7 @@ void DeleteFirstSong()
         head = head->next;
         head->prev = NULL;
     }
-    
+
     printf("Lagu \"%s\" dari Artist \"%s\" berhasil dihapus dari awal playlist.\n", temp->title, temp->artist);
     free(temp);
 }
@@ -150,7 +150,7 @@ void DisplayCurrentSong()
 {
     struct Song *current = NULL;
     printf("\n=== LAGU YANG SEDANG DIPUTAR ===\n");
-
+    
     if (head == NULL)
     {
         printf("Playlist masih kosong, tidak ada lagu yang diputar.\n");
