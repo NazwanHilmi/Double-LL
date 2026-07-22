@@ -113,32 +113,6 @@ void DeleteFirstSong()
     free(temp);
 }
 
-void DisplayAllSongs()
-{
-    if (head == NULL)
-    {
-        printf("Playlist masih kosong.\n");
-        return;
-    }
-
-    struct Song *temp = head;
-    int no = 1;
-
-    printf("\n========== PLAYLIST ==========\n");
-
-    while (temp != NULL)
-    {
-        printf("%d. Judul  : %s\n", no, temp->title);
-        printf("   Artist : %s\n", temp->artist);
-        printf("-----------------------------\n");
-
-        temp = temp->next;
-        no++;
-    }
-
-    printf("Total Lagu : %d\n", no - 1);
-}
-
 void SearchSong(char *songSearch, int mode)
 {
     printf("\n");
@@ -251,7 +225,7 @@ main()
             // Hapus Lagu Dari Playlist Akhir
             break;
         case 6:
-            DisplayAllSongs();
+            // Tampilkan Lagu
             break;
         case 7:
             printf("Anda memilih menu untuk mencari lagu\n");
