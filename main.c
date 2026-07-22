@@ -41,6 +41,27 @@ void AddFirstSong(char *title, char *artist)
     printf("Lagu \"%s\" dari Artist \"%s\" berhasil ditambahkan di awal playlist.\n", title, artist);
 }
 
+void AddLastSong(char *title, char *artist)
+{
+    struct Song *newNode = createNode();
+
+    strcpy(newNode->title, title);
+    strcpy(newNode->artist, artist);
+
+    if (head == NULL)
+    {
+        head = newNode;
+        return;
+    }
+    struct Song *temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+    temp->next = newNode;
+    newNode->prev = temp;
+
+    printf("Lagu \"%s\" dari Artist \"%s\" berhasil ditambahkan ke akhir playlist.\n", title, artist);
+}
+
 void DeleteFirstSong()
 {
     if (head == NULL)
@@ -107,7 +128,18 @@ main()
 
             break;
         case 2:
-            // Fungsi Tambah Lagu Ke Playlist Akhir
+            printf("Masukan Judul Lagu : ");
+            scanf(" %[^\n]", &titleSong);
+            printf("Masukan Nama Artist : ");
+            scanf(" %[^\n]", &artistName);
+            if (strlen(titleSong) == 0 || strlen(artistName) == 0)
+            {
+                printf("Judul Lagu/Nama Artist Tidak Boleh Kosong");
+            }
+            else
+            {
+                AddLastSong(titleSong, artistName);
+            }
             break;
         case 3:
             // Tambah Lagu Setelah Lagu Tertentu
@@ -119,7 +151,7 @@ main()
             // Hapus Lagu Dari Playlist Akhir
             break;
         case 6:
-            // Tampilkan Seluruh Lagu
+            DisplayAllSongs();
             break;
         case 7:
             // Cari Lagu Berdasarkan Artist/Judul
