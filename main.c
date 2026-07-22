@@ -62,6 +62,33 @@ void AddLastSong(char *title, char *artist)
     printf("Lagu \"%s\" dari Artist \"%s\" berhasil ditambahkan ke akhir playlist.\n", title, artist);
 }
 
+void AddSongAfter(char *after, char *title, char *artist)
+{
+    struct Song *temp = head;
+    while (temp != NULL && stricmp(temp->title, after) != 0)
+        temp = temp->next;
+    if (temp == NULL)
+    {
+        printf("Judul Lagu %s tidak ditemukan\n", after);
+        return;
+    }
+
+    struct Song *newNode = createNode();
+
+    strcpy(newNode->title, title);
+    strcpy(newNode->artist, artist);
+
+    newNode->next = temp->next;
+    newNode->prev = temp;
+    if (temp->next != NULL)
+    {
+        temp->next->prev = newNode;
+    }
+    temp->next = newNode;
+
+    printf("Lagu \"%s\" dari Artist \"%s\" berhasil ditambahkan setelah \"%s\".\n", title, artist, after);
+}
+
 void DeleteFirstSong()
 {
     if (head == NULL)
@@ -89,7 +116,7 @@ void DeleteFirstSong()
 main()
 {
     int choice;
-    char titleSong[100], artistName[100];
+    char titleSong[100], artistName[100], afterSong[100];
 
     do
     {
@@ -142,7 +169,21 @@ main()
             }
             break;
         case 3:
-            // Tambah Lagu Setelah Lagu Tertentu
+            printf("Masukan Judul Lagu Setelah Lagu Apa : ");
+            scanf(" %[^\n]", &afterSong);
+            printf("Masukan Judul Lagu : ");
+            scanf(" %[^\n]", &titleSong);
+            printf("Masukan Nama Artist : ");
+            scanf(" %[^\n]", &artistName);
+            if (strlen(titleSong) == 0 || strlen(artistName) == 0 || strlen(afterSong) == 0)
+            {
+                printf("Judul Lagu/Nama Artist Tidak Boleh Kosong");
+            }
+            else
+            {
+                AddSongAfter(afterSong, titleSong, artistName);
+            }
+
             break;
         case 4:
             DeleteFirstSong();
@@ -151,7 +192,7 @@ main()
             // Hapus Lagu Dari Playlist Akhir
             break;
         case 6:
-            DisplayAllSongs();
+            // Tampilkan Lagu
             break;
         case 7:
             // Cari Lagu Berdasarkan Artist/Judul
