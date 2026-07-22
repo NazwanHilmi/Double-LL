@@ -11,7 +11,6 @@ struct Song
 };
 
 struct Song *head = NULL;
-struct Song *current = NULL;
 
 struct Song *createNode()
 {
@@ -109,7 +108,7 @@ void DeleteFirstSong()
         head = head->next;
         head->prev = NULL;
     }
-
+    
     printf("Lagu \"%s\" dari Artist \"%s\" berhasil dihapus dari awal playlist.\n", temp->title, temp->artist);
     free(temp);
 }
@@ -149,26 +148,25 @@ void SearchSong(char *songSearch, int mode)
 
 void DisplayCurrentSong()
 {
+    struct Song *current = NULL;
     printf("\n=== LAGU YANG SEDANG DIPUTAR ===\n");
-    
-    // 1. Cek jika playlist masih kosong
+
     if (head == NULL)
     {
         printf("Playlist masih kosong, tidak ada lagu yang diputar.\n");
         return;
     }
 
-    // 2. Jika belum ada lagu yang dipilih/diputar, default ke lagu pertama (head)
     if (current == NULL)
     {
         current = head;
     }
-
-    // 3. Tampilkan detail lagu aktif
-    printf("▶️ Judul Lagu  : %s\n", current->title);
-    printf("🎤 Nama Artist : %s\n", current->artist);
+    printf("----------------------------------\n");
+    printf(" Judul Lagu  : %s\n", current->title);
+    printf(" Nama Artist : %s\n", current->artist);
     printf("----------------------------------\n");
 }
+
 
 main()
 {
