@@ -146,6 +146,25 @@ void SearchSong(char *songSearch, int mode)
     }
 }
 
+void tampilkanSeluruhLagu() {
+    if (head == NULL) {
+        cout << "\nPlaylist masih kosong!" << endl;
+        return;
+    }
+
+    Node *bantu = head;
+    int no = 1;
+
+    cout << "\n===== DAFTAR LAGU =====" << endl;
+
+    while (bantu != NULL) {
+        cout << no << ". " << bantu->judul << endl;
+        bantu = bantu->next;
+        no++;
+    }
+
+    cout << "=======================" << endl;
+}
 main()
 {
     int choice;
