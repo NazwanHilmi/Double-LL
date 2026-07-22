@@ -113,6 +113,65 @@ void DeleteFirstSong()
     free(temp);
 }
 
+void DisplayAllSongs()
+{
+    if (head == NULL)
+    {
+        printf("Playlist masih kosong.\n");
+        return;
+    }
+
+    struct Song *temp = head;
+    int no = 1;
+
+    printf("\n========== PLAYLIST ==========\n");
+
+    while (temp != NULL)
+    {
+        printf("%d. Judul  : %s\n", no, temp->title);
+        printf("   Artist : %s\n", temp->artist);
+        printf("-----------------------------\n");
+
+        temp = temp->next;
+        no++;
+    }
+
+    printf("Total Lagu : %d\n", no - 1);
+}
+
+void SearchSong(char *songSearch, int mode)
+{
+    printf("\n");
+    if (head == NULL)
+    {
+        printf("Playlist masih kosong.\n");
+        return;
+    }
+    struct Song *temp = head;
+    int position = 1;
+    int found = 0;
+    while (temp != NULL)
+    {
+        if ((mode == 1 && stricmp(temp->title, songSearch) == 0) || (mode == 2 && stricmp(temp->artist, songSearch) == 0))
+        {
+            printf("Lagu Ditemukan\n");
+            printf("Posisi lagu ada di urutan ke-%d\n", position);
+            printf("Judul Lagu  : %s\n", temp->title);
+            printf("Nama Artist : %s\n", temp->artist);
+            printf("-----------------------------\n");
+
+            found = 1;
+        }
+        temp = temp->next;
+        position++;
+    }
+
+    if (found == 0)
+    {
+        printf("Data \"%s\" tidak ditemukan.\n", songSearch);
+    }
+}
+
 main()
 {
     int choice;
@@ -192,10 +251,35 @@ main()
             // Hapus Lagu Dari Playlist Akhir
             break;
         case 6:
-            // Tampilkan Lagu
+            DisplayAllSongs();
             break;
         case 7:
-            // Cari Lagu Berdasarkan Artist/Judul
+            printf("Anda memilih menu untuk mencari lagu\n");
+            system("pause");
+            do
+            {
+                printf("1. Cari Berdasarkan Judul Lagu\n");
+                printf("2. Cari Berdasarkan Nama Artist\n");
+                printf("Pilih : ");
+                scanf("%d", &choice);
+
+                if (choice == 1)
+                {
+                    printf("Masukan Judul Lagu : ");
+                    scanf(" %[^\n]", titleSong);
+                    SearchSong(titleSong, 1);
+                }
+                else if (choice == 2)
+                {
+                    printf("Masukan Nama Artist : ");
+                    scanf(" %[^\n]", artistName);
+                    SearchSong(artistName, 2);
+                }
+                else
+                {
+                    printf("\nPilih antara 1-2\n");
+                }
+            } while (choice != 1 && choice != 2);
             break;
         case 8:
             // Mainkan Lagu Selanjutnya
