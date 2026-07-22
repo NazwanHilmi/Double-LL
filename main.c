@@ -146,6 +146,30 @@ void SearchSong(char *songSearch, int mode)
     }
 }
 
+void mainkanLaguSebelumnya() {
+    if (head == NULL) {
+        cout << "Playlist kosong!" << endl;
+        return;
+    }
+
+    if (current == head) {
+        cout << "Sudah berada di lagu pertama!" << endl;
+        return;
+    }
+
+    Node *temp = head;
+
+    while (temp->next != current) {
+        temp = temp->next;
+    }
+
+    current = temp;
+
+    cout << "\n=== Lagu Sebelumnya ===" << endl;
+    cout << "Judul : " << current->judul << endl;
+    cout << "Artis : " << current->artis << endl;
+}
+
 main()
 {
     int choice;
