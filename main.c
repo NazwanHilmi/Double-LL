@@ -146,25 +146,30 @@ void SearchSong(char *songSearch, int mode)
     }
 }
 
-void tampilkanSeluruhLagu() {
-    if (head == NULL) {
-        cout << "\nPlaylist masih kosong!" << endl;
+void TampilkanSeluruhLagu()
+{
+    if (head == NULL)
+    {
+        printf("Playlist masih kosong.\n");
         return;
     }
 
-    Node *bantu = head;
+    struct Song *temp = head;
     int no = 1;
 
-    cout << "\n===== DAFTAR LAGU =====" << endl;
+    printf("\n========== DAFTAR LAGU ==========\n");
 
-    while (bantu != NULL) {
-        cout << no << ". " << bantu->judul << endl;
-        bantu = bantu->next;
+    while (temp != NULL)
+    {
+        printf("%d. Judul  : %s\n", no, temp->title);
+        printf("   Artist : %s\n", temp->artist);
+        printf("--------------------------------\n");
+
+        temp = temp->next;
         no++;
     }
-
-    cout << "=======================" << endl;
 }
+
 main()
 {
     int choice;
@@ -244,6 +249,8 @@ main()
             // Hapus Lagu Dari Playlist Akhir
             break;
         case 6:
+        	TampilkanSeluruhLagu();
+        	break;
             // Tampilkan Lagu
             break;
         case 7:
