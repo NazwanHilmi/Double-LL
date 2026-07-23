@@ -146,6 +146,48 @@ void SearchSong(char *songSearch, int mode)
     }
 }
 
+// Struktur Node
+typedef struct Lagu {
+    char judul[100];
+    char penyanyi[100];
+    struct Lagu *prev;
+    struct Lagu *next;
+} Lagu;
+
+// Pointer global
+Lagu *head = NULL;
+Lagu *tail = NULL;
+Lagu *current = NULL;
+
+// Function Mainkan Lagu Selanjutnya
+void mainkanLaguSelanjutnya() {
+    // Cek apakah playlist kosong
+    if (head == NULL) {
+        printf("\nPlaylist kosong!\n");
+        return;
+    }
+
+    // Jika belum ada lagu yang diputar
+    if (current == NULL) {
+        current = head;
+    }
+    // Jika masih ada lagu berikutnya
+    else if (current->next != NULL) {
+        current = current->next;
+    }
+    // Jika sudah di lagu terakhir
+    else {
+        printf("\nSudah berada di lagu terakhir!\n");
+        return;
+    }
+
+    printf("\n====================================");
+    printf("\nSedang Memutar Lagu");
+    printf("\nJudul    : %s", current->judul);
+    printf("\nPenyanyi : %s", current->penyanyi);
+    printf("\n====================================\n");
+}
+
 main()
 {
     int choice;
