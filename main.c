@@ -146,18 +146,6 @@ void SearchSong(char *songSearch, int mode)
     }
 }
 
-// Struktur Node
-typedef struct Lagu {
-    char judul[100];
-    char penyanyi[100];
-    struct Lagu *prev;
-    struct Lagu *next;
-} Lagu;
-
-// Pointer global
-Lagu *head = NULL;
-Lagu *tail = NULL;
-Lagu *current = NULL;
 
 // Function Mainkan Lagu Selanjutnya
 void mainkanLaguSelanjutnya() {
@@ -298,7 +286,7 @@ main()
             } while (choice != 1 && choice != 2);
             break;
         case 8:
-            // Mainkan Lagu Selanjutnya
+            mainkanLaguSelanjutnya() 
             break;
         case 9:
             // Mainkan Lagu Sebelumnya
