@@ -209,6 +209,32 @@ void SearchSong(char *songSearch, int mode)
     }
 }
 
+void mainkanLaguSelanjutnya() {
+    if (head == NULL) {
+        printf("\nPlaylist kosong!\n");
+        return;
+    }
+
+    if (current == NULL) {
+        current = head;
+    }
+  
+    else if (current->next != NULL) {
+        current = current->next;
+    }
+    // Jika sudah di lagu terakhir
+    else {
+        printf("\nSudah berada di lagu terakhir!\n");
+        return;
+    }
+
+    printf("\n====================================");
+    printf("\nSedang Memutar Lagu");
+    printf("\nJudul    : %s", current->judul);
+    printf("\nPenyanyi : %s", current->penyanyi);
+    printf("\n====================================\n");
+}
+
 void DisplayCurrentSong()
 {
     struct Song *current = NULL;
@@ -342,7 +368,7 @@ main()
             } while (choice != 1 && choice != 2);
             break;
         case 8:
-            // Mainkan Lagu Selanjutnya
+            mainkanLaguSelanjutnya() 
             break;
         case 9:
             // Mainkan Lagu Sebelumnya
