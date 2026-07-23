@@ -170,6 +170,28 @@ void SearchSong(char *songSearch, int mode)
     }
 }
 
+void DisplayCurrentSong()
+{
+    struct Song *current = NULL;
+    printf("\n=== LAGU YANG SEDANG DIPUTAR ===\n");
+    
+    if (head == NULL)
+    {
+        printf("Playlist masih kosong, tidak ada lagu yang diputar.\n");
+        return;
+    }
+
+    if (current == NULL)
+    {
+        current = head;
+    }
+    printf("----------------------------------\n");
+    printf(" Judul Lagu  : %s\n", current->title);
+    printf(" Nama Artist : %s\n", current->artist);
+    printf("----------------------------------\n");
+}
+
+
 main()
 {
     int choice;
@@ -288,7 +310,7 @@ main()
             // Mainkan Lagu Sebelumnya
             break;
         case 10:
-            // Tampilkan Lagu Yang Sedang Diputar
+            DisplayCurrentSong();
             break;
         default:
             break;
