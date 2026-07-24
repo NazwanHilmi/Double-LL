@@ -209,6 +209,30 @@ void SearchSong(char *songSearch, int mode)
     }
 }
 
+void mainkanLaguSebelumnya() {
+    if (head == NULL) {
+        printf("Playlist kosong!");
+        return;
+    }
+
+    if (current == head) {
+        printf("Sudah berada di lagu pertama");
+        return;
+    }
+
+    Node *temp = head;
+
+    while (temp->next != current) {
+        temp = temp->next;
+    }
+
+    current = temp;
+
+    printf("\n=== Lagu Sebelumnya ===");
+    printf("Judul : %s", current->judul);
+    printf("Artis : %s", current->artis);
+}
+
 void mainkanLaguSelanjutnya() {
     if (head == NULL) {
         printf("\nPlaylist kosong!\n");
@@ -222,7 +246,7 @@ void mainkanLaguSelanjutnya() {
     else if (current->next != NULL) {
         current = current->next;
     }
-    // Jika sudah di lagu terakhir
+
     else {
         printf("\nSudah berada di lagu terakhir!\n");
         return;
@@ -337,8 +361,6 @@ main()
         case 6:
             TampilkanSeluruhLagu();
             break;
-            // Tampilkan Lagu
-            break;
         case 7:
             printf("Anda memilih menu untuk mencari lagu\n");
             system("pause");
@@ -371,7 +393,7 @@ main()
             mainkanLaguSelanjutnya() 
             break;
         case 9:
-            // Mainkan Lagu Sebelumnya
+            mainkanLaguSebelumnya() 
             break;
         case 10:
             DisplayCurrentSong();
