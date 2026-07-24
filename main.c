@@ -182,39 +182,54 @@ void SearchSong(char* songSearch, int mode) {
 }
 
 void mainkanLaguSebelumnya() {
-    if (head == NULL) {
-        printf("Playlist kosong!\n");
+    if (head == NULL || head->next == NULL) {
+        printf("Playlist tidak cukup untuk digeser.\n");
         return;
     }
 
-    if (current == NULL) {
-        current = head;
-    } else if (current->prev != NULL) {
-        current = current->prev;
-    } else {
-        printf("Sudah berada di lagu pertama!\n");
-        return;
-    }
+    struct Song* last = head;
 
-    printf("\n=== Lagu Sebelumnya ===\n");
-    printf("Judul : %s\n", current->title);
-    printf("Artis : %s\n", current->artist);
+    while (last->next != NULL)
+        last = last->next;
+
+    struct Song* beforeLast = last->prev;
+
+    beforeLast->next = NULL;
+
+    last->next = head;
+    last->prev = NULL;
+    head->prev = last;
+
+    head = last;
+
+    current = head;
+
+    printf("\n====================================");
+    printf("\nSedang Memutar Lagu");
+    printf("\nJudul    : %s", current->title);
+    printf("\nPenyanyi : %s", current->artist);
+    printf("\n====================================\n");
 }
 
 void mainkanLaguSelanjutnya() {
-    if (head == NULL) {
-        printf("\nPlaylist kosong!\n");
+    if (head == NULL || head->next == NULL) {
+        printf("Playlist tidak cukup untuk digeser.\n");
         return;
     }
 
-    if (current == NULL) {
-        current = head;
-    } else if (current->next != NULL) {
-        current = current->next;
-    } else {
-        printf("\nSudah berada di lagu terakhir!\n");
-        return;
-    }
+    struct Song* first = head;
+    struct Song* last = head;
+
+    while (last->next != NULL)
+        last = last->next;
+    head = first->next;
+    head->prev = NULL;
+
+    last->next = first;
+    first->prev = last;
+    first->next = NULL;
+
+    current = head;
 
     printf("\n====================================");
     printf("\nSedang Memutar Lagu");
@@ -240,7 +255,7 @@ void DisplayCurrent() {
     printf("----------------------------------\n");
 }
 
-void free() {
+void freeMemo() {
     struct Song* temp = head;
     while (temp != NULL) {
         struct Song* nextSong = temp->next;
@@ -257,7 +272,7 @@ int main() {
 
     do {
         system("cls");
-        printf("\n===PLAYLIST MUSIK===\n");
+        printf("===PLAYLIST MUSIK===\n");
         printf("1. Tambah Lagu Ke Playlist Awal\n");
         printf("2. Tambah Lagu Ke Playlist Akhir\n");
         printf("3. Tambah Lagu Setelah Lagu Tertentu\n");
@@ -358,7 +373,7 @@ int main() {
         system("pause");
     } while (choice != 0);
 
-    free();
+    freeMemo();
     printf("Memori berhasil dibersihkan. Keluar dari program...\n");
 
     return 0;
