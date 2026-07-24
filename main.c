@@ -11,6 +11,7 @@ struct Song
 };
 
 struct Song *head = NULL;
+struct Song *currentSong = NULL;
 
 struct Song *createNode()
 {
@@ -113,6 +114,68 @@ void DeleteFirstSong()
     free(temp);
 }
 
+void DeleteLastSong()
+{
+
+    if (head == NULL)
+    {
+        printf("\nPlaylist kosong, tidak ada lagu yang bisa dihapus.\n");
+        return;
+    }
+
+    struct Song *temp = head;
+
+    if (head->next == NULL)
+    {
+        if (currentSong == head)
+        {
+            currentSong = NULL;
+        }
+        head = NULL;
+    }
+    else
+    {
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+
+        if (currentSong == temp)
+        {
+            currentSong = temp->prev;
+        }
+
+        temp->prev->next = NULL;
+    }
+
+    printf("\nLagu \"%s\" dari Artist \"%s\" berhasil dihapus dari akhir playlist.\n", temp->title, temp->artist);
+    free(temp);
+}
+
+void TampilkanSeluruhLagu()
+{
+    if (head == NULL)
+    {
+        printf("Playlist masih kosong.\n");
+        return;
+    }
+
+    struct Song *temp = head;
+    int no = 1;
+
+    printf("\n========== DAFTAR PLAYLIST ==========\n");
+
+    while (temp != NULL)
+    {
+        printf("%d. Judul  : %s\n", no, temp->title);
+        printf("   Artist : %s\n", temp->artist);
+        printf("--------------------------------\n");
+
+        temp = temp->next;
+        no++;
+    }
+}
+
 void SearchSong(char *songSearch, int mode)
 {
     printf("\n");
@@ -148,12 +211,12 @@ void SearchSong(char *songSearch, int mode)
 
 void mainkanLaguSebelumnya() {
     if (head == NULL) {
-        cout << "Playlist kosong!" << endl;
+        printf("Playlist kosong!");
         return;
     }
 
     if (current == head) {
-        cout << "Sudah berada di lagu pertama!" << endl;
+        printf("Sudah berada di lagu pertama");
         return;
     }
 
@@ -165,9 +228,56 @@ void mainkanLaguSebelumnya() {
 
     current = temp;
 
-    cout << "\n=== Lagu Sebelumnya ===" << endl;
-    cout << "Judul : " << current->judul << endl;
-    cout << "Artis : " << current->artis << endl;
+    printf("\n=== Lagu Sebelumnya ===");
+    printf("Judul : %s", current->judul);
+    printf("Artis : %s", current->artis);
+}
+
+void mainkanLaguSelanjutnya() {
+    if (head == NULL) {
+        printf("\nPlaylist kosong!\n");
+        return;
+    }
+
+    if (current == NULL) {
+        current = head;
+    }
+  
+    else if (current->next != NULL) {
+        current = current->next;
+    }
+
+    else {
+        printf("\nSudah berada di lagu terakhir!\n");
+        return;
+    }
+
+    printf("\n====================================");
+    printf("\nSedang Memutar Lagu");
+    printf("\nJudul    : %s", current->judul);
+    printf("\nPenyanyi : %s", current->penyanyi);
+    printf("\n====================================\n");
+}
+
+void DisplayCurrentSong()
+{
+    struct Song *current = NULL;
+    printf("\n=== LAGU YANG SEDANG DIPUTAR ===\n");
+
+    if (head == NULL)
+    {
+        printf("Playlist masih kosong, tidak ada lagu yang diputar.\n");
+        return;
+    }
+
+    if (current == NULL)
+    {
+        current = head;
+    }
+    printf("----------------------------------\n");
+    printf(" Judul Lagu  : %s\n", current->title);
+    printf(" Nama Artist : %s\n", current->artist);
+    printf("----------------------------------\n");
 }
 
 main()
@@ -246,10 +356,10 @@ main()
             DeleteFirstSong();
             break;
         case 5:
-            // Hapus Lagu Dari Playlist Akhir
+            DeleteLastSong();
             break;
         case 6:
-            // Tampilkan Lagu
+            TampilkanSeluruhLagu();
             break;
         case 7:
             printf("Anda memilih menu untuk mencari lagu\n");
@@ -280,13 +390,13 @@ main()
             } while (choice != 1 && choice != 2);
             break;
         case 8:
-            // Mainkan Lagu Selanjutnya
+            mainkanLaguSelanjutnya() 
             break;
         case 9:
-            // Mainkan Lagu Sebelumnya
+            mainkanLaguSebelumnya() 
             break;
         case 10:
-            // Tampilkan Lagu Yang Sedang Diputar
+            DisplayCurrentSong();
             break;
         default:
             break;
