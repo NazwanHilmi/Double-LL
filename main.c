@@ -2,38 +2,32 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct Song
-{
+struct Song {
     char artist[100];
     char title[100];
-    struct Song *next;
-    struct Song *prev;
+    struct Song* next;
+    struct Song* prev;
 };
 
-struct Song *head = NULL;
-struct Song *currentSong = NULL;
+struct Song* head = NULL;
+struct Song* current = NULL;
 
-struct Song *createNode()
-{
-    struct Song *newNode = (struct Song *)malloc(sizeof(struct Song));
+struct Song* createNode() {
+    struct Song* newNode = (struct Song*)malloc(sizeof(struct Song));
     newNode->next = NULL;
     newNode->prev = NULL;
     return newNode;
 }
 
-void AddFirstSong(char *title, char *artist)
-{
-    struct Song *newNode = createNode();
+void AddFirstSong(char* title, char* artist) {
+    struct Song* newNode = createNode();
 
     strcpy(newNode->title, title);
     strcpy(newNode->artist, artist);
 
-    if (head == NULL)
-    {
+    if (head == NULL) {
         head = newNode;
-    }
-    else
-    {
+    } else {
         newNode->next = head;
         head->prev = newNode;
         head = newNode;
@@ -42,47 +36,43 @@ void AddFirstSong(char *title, char *artist)
     printf("Lagu \"%s\" dari Artist \"%s\" berhasil ditambahkan di awal playlist.\n", title, artist);
 }
 
-void AddLastSong(char *title, char *artist)
-{
-    struct Song *newNode = createNode();
+void AddLastSong(char* title, char* artist) {
+    struct Song* newNode = createNode();
 
     strcpy(newNode->title, title);
     strcpy(newNode->artist, artist);
 
-    if (head == NULL)
-    {
+    if (head == NULL) {
         head = newNode;
-        return;
+    } else {
+        struct Song* temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+        newNode->prev = temp;
     }
-    struct Song *temp = head;
-    while (temp->next != NULL)
-        temp = temp->next;
-    temp->next = newNode;
-    newNode->prev = temp;
 
     printf("Lagu \"%s\" dari Artist \"%s\" berhasil ditambahkan ke akhir playlist.\n", title, artist);
 }
 
-void AddSongAfter(char *after, char *title, char *artist)
-{
-    struct Song *temp = head;
+void AddSongAfter(char* after, char* title, char* artist) {
+    struct Song* temp = head;
     while (temp != NULL && stricmp(temp->title, after) != 0)
         temp = temp->next;
-    if (temp == NULL)
-    {
+    if (temp == NULL) {
         printf("Judul Lagu %s tidak ditemukan\n", after);
         return;
     }
 
-    struct Song *newNode = createNode();
+    struct Song* newNode = createNode();
 
     strcpy(newNode->title, title);
     strcpy(newNode->artist, artist);
 
     newNode->next = temp->next;
     newNode->prev = temp;
-    if (temp->next != NULL)
-    {
+    if (temp->next != NULL) {
         temp->next->prev = newNode;
     }
     temp->next = newNode;
@@ -90,59 +80,48 @@ void AddSongAfter(char *after, char *title, char *artist)
     printf("Lagu \"%s\" dari Artist \"%s\" berhasil ditambahkan setelah \"%s\".\n", title, artist, after);
 }
 
-void DeleteFirstSong()
-{
-    if (head == NULL)
-    {
+void DeleteFirstSong() {
+    if (head == NULL) {
         printf("Playlist kosong, tidak ada lagu yang bisa dihapus.\n");
         return;
     }
 
-    struct Song *temp = head;
+    struct Song* temp = head;
 
-    if (head->next == NULL)
-    {
+    if (head->next == NULL) {
         head = NULL;
-    }
-    else
-    {
+    } else {
         head = head->next;
         head->prev = NULL;
     }
 
+    if (current == temp) {
+        current = temp->next;
+    }
     printf("Lagu \"%s\" dari Artist \"%s\" berhasil dihapus dari awal playlist.\n", temp->title, temp->artist);
     free(temp);
 }
 
-void DeleteLastSong()
-{
-
-    if (head == NULL)
-    {
-        printf("\nPlaylist kosong, tidak ada lagu yang bisa dihapus.\n");
+void DeleteLastSong() {
+    if (head == NULL) {
+        printf("Playlist kosong, tidak ada lagu yang bisa dihapus.\n");
         return;
     }
 
-    struct Song *temp = head;
+    struct Song* temp = head;
 
-    if (head->next == NULL)
-    {
-        if (currentSong == head)
-        {
-            currentSong = NULL;
+    if (head->next == NULL) {
+        if (current == head) {
+            current = NULL;
         }
         head = NULL;
-    }
-    else
-    {
-        while (temp->next != NULL)
-        {
+    } else {
+        while (temp->next != NULL) {
             temp = temp->next;
         }
 
-        if (currentSong == temp)
-        {
-            currentSong = temp->prev;
+        if (current == temp) {
+            current = temp->prev;
         }
 
         temp->prev->next = NULL;
@@ -152,21 +131,18 @@ void DeleteLastSong()
     free(temp);
 }
 
-void TampilkanSeluruhLagu()
-{
-    if (head == NULL)
-    {
+void TampilkanSeluruhLagu() {
+    if (head == NULL) {
         printf("Playlist masih kosong.\n");
         return;
     }
 
-    struct Song *temp = head;
+    struct Song* temp = head;
     int no = 1;
 
     printf("\n========== DAFTAR PLAYLIST ==========\n");
 
-    while (temp != NULL)
-    {
+    while (temp != NULL) {
         printf("%d. Judul  : %s\n", no, temp->title);
         printf("   Artist : %s\n", temp->artist);
         printf("--------------------------------\n");
@@ -176,21 +152,18 @@ void TampilkanSeluruhLagu()
     }
 }
 
-void SearchSong(char *songSearch, int mode)
-{
+void SearchSong(char* songSearch, int mode) {
     printf("\n");
-    if (head == NULL)
-    {
+    if (head == NULL) {
         printf("Playlist masih kosong.\n");
         return;
     }
-    struct Song *temp = head;
+    struct Song* temp = head;
     int position = 1;
     int found = 0;
-    while (temp != NULL)
-    {
-        if ((mode == 1 && stricmp(temp->title, songSearch) == 0) || (mode == 2 && stricmp(temp->artist, songSearch) == 0))
-        {
+    while (temp != NULL) {
+        if ((mode == 1 && stricmp(temp->title, songSearch) == 0) ||
+            (mode == 2 && stricmp(temp->artist, songSearch) == 0)) {
             printf("Lagu Ditemukan\n");
             printf("Posisi lagu ada di urutan ke-%d\n", position);
             printf("Judul Lagu  : %s\n", temp->title);
@@ -203,34 +176,29 @@ void SearchSong(char *songSearch, int mode)
         position++;
     }
 
-    if (found == 0)
-    {
+    if (found == 0) {
         printf("Data \"%s\" tidak ditemukan.\n", songSearch);
     }
 }
 
 void mainkanLaguSebelumnya() {
     if (head == NULL) {
-        printf("Playlist kosong!");
+        printf("Playlist kosong!\n");
         return;
     }
 
-    if (current == head) {
-        printf("Sudah berada di lagu pertama");
+    if (current == NULL) {
+        current = head;
+    } else if (current->prev != NULL) {
+        current = current->prev;
+    } else {
+        printf("Sudah berada di lagu pertama!\n");
         return;
     }
 
-    Node *temp = head;
-
-    while (temp->next != current) {
-        temp = temp->next;
-    }
-
-    current = temp;
-
-    printf("\n=== Lagu Sebelumnya ===");
-    printf("Judul : %s", current->judul);
-    printf("Artis : %s", current->artis);
+    printf("\n=== Lagu Sebelumnya ===\n");
+    printf("Judul : %s\n", current->title);
+    printf("Artis : %s\n", current->artist);
 }
 
 void mainkanLaguSelanjutnya() {
@@ -241,37 +209,29 @@ void mainkanLaguSelanjutnya() {
 
     if (current == NULL) {
         current = head;
-    }
-  
-    else if (current->next != NULL) {
+    } else if (current->next != NULL) {
         current = current->next;
-    }
-
-    else {
+    } else {
         printf("\nSudah berada di lagu terakhir!\n");
         return;
     }
 
     printf("\n====================================");
     printf("\nSedang Memutar Lagu");
-    printf("\nJudul    : %s", current->judul);
-    printf("\nPenyanyi : %s", current->penyanyi);
+    printf("\nJudul    : %s", current->title);
+    printf("\nPenyanyi : %s", current->artist);
     printf("\n====================================\n");
 }
 
-void DisplayCurrentSong()
-{
-    struct Song *current = NULL;
+void DisplayCurrent() {
     printf("\n=== LAGU YANG SEDANG DIPUTAR ===\n");
 
-    if (head == NULL)
-    {
+    if (head == NULL) {
         printf("Playlist masih kosong, tidak ada lagu yang diputar.\n");
         return;
     }
 
-    if (current == NULL)
-    {
+    if (current == NULL) {
         current = head;
     }
     printf("----------------------------------\n");
@@ -280,13 +240,22 @@ void DisplayCurrentSong()
     printf("----------------------------------\n");
 }
 
-main()
-{
-    int choice;
+void free() {
+    struct Song* temp = head;
+    while (temp != NULL) {
+        struct Song* nextSong = temp->next;
+        free(temp);
+        temp = nextSong;
+    }
+    head = NULL;
+    current = NULL;
+}
+
+int main() {
+    int choice, searchChoice;
     char titleSong[100], artistName[100], afterSong[100];
 
-    do
-    {
+    do {
         system("cls");
         printf("\n===PLAYLIST MUSIK===\n");
         printf("1. Tambah Lagu Ke Playlist Awal\n");
@@ -304,104 +273,93 @@ main()
         printf("Pilih Menu : ");
         scanf("%d", &choice);
 
-        switch (choice)
-        {
-        case 1:
-            printf("Masukan Judul Lagu : ");
-            scanf(" %[^\n]", &titleSong);
-            printf("Masukan Nama Artist : ");
-            scanf(" %[^\n]", &artistName);
-            if (strlen(titleSong) == 0 || strlen(artistName) == 0)
-            {
-                printf("Judul Lagu/Nama Artist Tidak Boleh Kosong");
-            }
-            else
-            {
-                AddFirstSong(titleSong, artistName);
-            }
-
-            break;
-        case 2:
-            printf("Masukan Judul Lagu : ");
-            scanf(" %[^\n]", &titleSong);
-            printf("Masukan Nama Artist : ");
-            scanf(" %[^\n]", &artistName);
-            if (strlen(titleSong) == 0 || strlen(artistName) == 0)
-            {
-                printf("Judul Lagu/Nama Artist Tidak Boleh Kosong");
-            }
-            else
-            {
-                AddLastSong(titleSong, artistName);
-            }
-            break;
-        case 3:
-            printf("Masukan Judul Lagu Setelah Lagu Apa : ");
-            scanf(" %[^\n]", &afterSong);
-            printf("Masukan Judul Lagu : ");
-            scanf(" %[^\n]", &titleSong);
-            printf("Masukan Nama Artist : ");
-            scanf(" %[^\n]", &artistName);
-            if (strlen(titleSong) == 0 || strlen(artistName) == 0 || strlen(afterSong) == 0)
-            {
-                printf("Judul Lagu/Nama Artist Tidak Boleh Kosong");
-            }
-            else
-            {
-                AddSongAfter(afterSong, titleSong, artistName);
-            }
-
-            break;
-        case 4:
-            DeleteFirstSong();
-            break;
-        case 5:
-            DeleteLastSong();
-            break;
-        case 6:
-            TampilkanSeluruhLagu();
-            break;
-        case 7:
-            printf("Anda memilih menu untuk mencari lagu\n");
-            system("pause");
-            do
-            {
-                printf("1. Cari Berdasarkan Judul Lagu\n");
-                printf("2. Cari Berdasarkan Nama Artist\n");
-                printf("Pilih : ");
-                scanf("%d", &choice);
-
-                if (choice == 1)
-                {
-                    printf("Masukan Judul Lagu : ");
-                    scanf(" %[^\n]", titleSong);
-                    SearchSong(titleSong, 1);
+        switch (choice) {
+            case 1:
+                printf("Masukan Judul Lagu : ");
+                scanf(" %99[^\n]", titleSong);
+                printf("Masukan Nama Artist : ");
+                scanf(" %99[^\n]", artistName);
+                if (strlen(titleSong) == 0 || strlen(artistName) == 0) {
+                    printf("Judul Lagu/Nama Artist Tidak Boleh Kosong");
+                } else {
+                    AddFirstSong(titleSong, artistName);
                 }
-                else if (choice == 2)
-                {
-                    printf("Masukan Nama Artist : ");
-                    scanf(" %[^\n]", artistName);
-                    SearchSong(artistName, 2);
+
+                break;
+            case 2:
+                printf("Masukan Judul Lagu : ");
+                scanf(" %99[^\n]", titleSong);
+                printf("Masukan Nama Artist : ");
+                scanf(" %99[^\n]", artistName);
+                if (strlen(titleSong) == 0 || strlen(artistName) == 0) {
+                    printf("Judul Lagu/Nama Artist Tidak Boleh Kosong");
+                } else {
+                    AddLastSong(titleSong, artistName);
                 }
-                else
-                {
-                    printf("\nPilih antara 1-2\n");
+                break;
+            case 3:
+                printf("Masukan Judul Lagu Setelah Lagu Apa : ");
+                scanf(" %99[^\n]", afterSong);
+                printf("Masukan Judul Lagu : ");
+                scanf(" %99[^\n]", titleSong);
+                printf("Masukan Nama Artist : ");
+                scanf(" %99[^\n]", artistName);
+                if (strlen(titleSong) == 0 || strlen(artistName) == 0 || strlen(afterSong) == 0) {
+                    printf("Judul Lagu/Nama Artist Tidak Boleh Kosong");
+                } else {
+                    AddSongAfter(afterSong, titleSong, artistName);
                 }
-            } while (choice != 1 && choice != 2);
-            break;
-        case 8:
-            mainkanLaguSelanjutnya() 
-            break;
-        case 9:
-            mainkanLaguSebelumnya() 
-            break;
-        case 10:
-            DisplayCurrentSong();
-            break;
-        default:
-            break;
+
+                break;
+            case 4:
+                DeleteFirstSong();
+                break;
+            case 5:
+                DeleteLastSong();
+                break;
+            case 6:
+                TampilkanSeluruhLagu();
+                break;
+            case 7:
+                printf("Anda memilih menu untuk mencari lagu\n");
+                system("pause");
+                do {
+                    printf("1. Cari Berdasarkan Judul Lagu\n");
+                    printf("2. Cari Berdasarkan Nama Artist\n");
+                    printf("Pilih : ");
+                    scanf("%d", &searchChoice);
+
+                    if (searchChoice == 1) {
+                        printf("Masukan Judul Lagu : ");
+                        scanf(" %99[^\n]", titleSong);
+                        SearchSong(titleSong, 1);
+                    } else if (searchChoice == 2) {
+                        printf("Masukan Nama Artist : ");
+                        scanf(" %99[^\n]", artistName);
+                        SearchSong(artistName, 2);
+                    } else {
+                        printf("\nPilih antara 1-2\n");
+                    }
+                } while (searchChoice != 1 && searchChoice != 2);
+                break;
+            case 8:
+                mainkanLaguSelanjutnya();
+                break;
+            case 9:
+                mainkanLaguSebelumnya();
+                break;
+            case 10:
+                DisplayCurrent();
+                break;
+            default:
+                break;
         }
 
         system("pause");
     } while (choice != 0);
+
+    free();
+    printf("Memori berhasil dibersihkan. Keluar dari program...\n");
+
+    return 0;
 }
